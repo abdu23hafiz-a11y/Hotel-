@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atrium — Property Management for Independent Hotels</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,400..500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+
+  :root{
+    --ink:#11281C;
+    --ink-soft:#1B3A28;
+    --ink-line: rgba(244,238,224,0.14);
+    --paper:#F4EEE0;
+    --paper-deep:#E9DFC7;
+    --paper-line: rgba(27,26,18,0.12);
+    --brass:#B6873B;
+    --brass-light:#D9AE6C;
+    --brass-dim:#8C6A2E;
+    --cream:#F4EEE0;
+    --charcoal:#1B1A12;
+    --charcoal-soft:#56523F;
+
+    --font-display:'Fraunces', serif;
+    --font-body:'Inter', sans-serif;
+    --font-mono:'JetBrains Mono', monospace;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--paper);
+    color:var(--charcoal);
+    font-family:var(--font-body);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{ max-width:100%; display:block; }
+  a{ color:inherit; text-decoration:none; }
+  ul{ list-style:none; }
+  button{ font-family:inherit; cursor:pointer; border:none; background:none; }
+
+  :focus-visible{
+    outline:2px solid var(--brass);
+    outline-offset:3px;
+  }
+
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 32px;
+  }
+
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--brass);
+    font-weight:600;
+  }
+
+  h1,h2,h3{ font-family:var(--font-display); font-weight:600; letter-spacing:-0.01em; }
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:13px 26px;
+    border-radius:4px;
+    font-size:15px;
+    font-weight:600;
+    font-family:var(--font-body);
+    transition:transform 160ms ease, background 160ms ease, color 160ms ease, border-color 160ms ease;
+  }
+  .btn-brass{
+    background:var(--brass);
+    color:var(--ink);
+  }
+  .btn-brass:hover{ background:var(--brass-light); transform:translateY(-1px); }
+  .btn-ghost-dark{
+    color:var(--cream);
+    border:1px solid var(--ink-line);
+  }
+  .btn-ghost-dark:hover{ border-color:var(--brass-light); color:var(--brass-light); }
+  .btn-ghost-light{
+    color:var(--charcoal);
+    border:1px solid var(--paper-line);
+  }
+  .btn-ghost-light:hover{ border-color:var(--brass); color:var(--brass-dim); }
+
+  /* ---------- NAV ---------- */
+  .nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(244,238,224,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--paper-line);
+  }
+  .nav .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    height:78px;
+  }
+  .nav-mark{
+    font-family:var(--font-display);
+    font-style:italic;
+    font-size:24px;
+    font-weight:500;
+    color:var(--charcoal);
+  }
+  .nav-mark span{ color:var(--brass); }
+  .nav-links{
+    display:flex; gap:36px;
+    font-size:14.5px; font-weight:500; color:var(--charcoal-soft);
+  }
+  .nav-links a:hover{ color:var(--charcoal); }
+  .nav-cta{ display:flex; align-items:center; gap:22px; }
+  .nav-login{ font-size:14.5px; font-weight:500; color:var(--charcoal-soft); }
+  .nav-login:hover{ color:var(--charcoal); }
+  @media (max-width: 760px){
+    .nav-links{ display:none; }
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:var(--ink);
+    color:var(--cream);
+    padding:88px 0 96px;
+    overflow:hidden;
+  }
+  .hero .wrap{
+    display:grid;
+    grid-template-columns:1.05fr 0.95fr;
+    gap:64px;
+    align-items:center;
+  }
+  .hero-eyebrow{ margin-bottom:22px; }
+  .hero h1{
+    font-size:clamp(36px, 4.6vw, 58px);
+    line-height:1.08;
+    margin-bottom:22px;
+  }
+  .hero h1 em{ font-style:italic; color:var(--brass-light); }
+  .hero p.lead{
+    font-size:18px;
+    color:rgba(244,238,224,0.78);
+    max-width:480px;
+    margin-bottom:34px;
+  }
+  .hero-ctas{ display:flex; gap:14px; flex-wrap:wrap; margin-bottom:28px; }
+  .hero-proof{
+    font-family:var(--font-mono);
+    font-size:12.5px;
+    color:rgba(244,238,224,0.55);
+    letter-spacing:0.03em;
+  }
+
+  /* ---------- FLAP BOARD ---------- */
+  .board{
+    background:#0A1C13;
+    border:1px solid rgba(182,135,59,0.35);
+    border-radius:6px;
+    padding:22px 22px 18px;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.55);
+  }
+  .board-head{
+    display:flex; justify-content:space-between; align-items:center;
+    margin-bottom:16px;
+    padding-bottom:14px;
+    border-bottom:1px solid rgba(182,135,59,0.25);
+  }
+  .board-head .eyebrow{ color:var(--brass-light); }
+  .board-dot{
+    width:8px; height:8px; border-radius:50%;
+    background:var(--brass-light);
+    box-shadow:0 0 0 3px rgba(217,174,108,0.18);
+    display:inline-block;
+    margin-right:8px;
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse{ 0%,100%{ opacity:1; } 50%{ opacity:0.4; } }
+
+  .flap-row{
+    display:flex; align-items:center; gap:14px;
+    padding:11px 4px;
+    border-bottom:1px solid rgba(244,238,224,0.06);
+  }
+  .flap-row:last-child{ border-bottom:none; }
+  .flap-room{
+    font-family:var(--font-mono);
+    font-size:13px;
+    color:rgba(244,238,224,0.5);
+    width:34px;
+    flex-shrink:0;
+  }
+  .flap-room::before{ content:"RM "; color:rgba(244,238,224,0.3); }
+  .flap-status-wrap{
+    flex:1;
+    perspective:300px;
+  }
+  .flap-status{
+    display:inline-block;
+    font-family:var(--font-mono);
+    font-weight:700;
+    font-size:15px;
+    letter-spacing:0.04em;
+    color:var(--cream);
+    transform-origin:50% 50%;
+    will-change:transform;
+  }
+  .flap-since{
+    font-family:var(--font-mono);
+    font-size:11.5px;
+    color:rgba(244,238,224,0.32);
+    flex-shrink:0;
+  }
+
+  @media (max-width: 920px){
+    .hero .wrap{ grid-template-columns:1fr; }
+    .hero p.lead{ max-width:none; }
+  }
+
+  /* ---------- LOGOS ---------- */
+  .logos{
+    background:var(--paper-deep);
+    padding:34px 0;
+    border-bottom:1px solid var(--paper-line);
+  }
+  .logos .wrap{
+    display:flex; align-items:center; gap:28px; flex-wrap:wrap;
+    justify-content:space-between;
+  }
+  .logos-label{
+    font-family:var(--font-mono);
+    font-size:12px; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--charcoal-soft);
+    flex-shrink:0;
+  }
+  .logos-names{
+    display:flex; gap:32px; flex-wrap:wrap;
+    font-family:var(--font-display);
+    font-style:italic;
+    font-size:18px;
+    color:var(--charcoal-soft);
+  }
+
+  /* ---------- RHYTHM ---------- */
+  .rhythm{ padding:108px 0 96px; }
+  .rhythm-head{ max-width:560px; margin-bottom:64px; }
+  .rhythm-head .eyebrow{ margin-bottom:16px; display:block; }
+  .rhythm-head h2{ font-size:clamp(30px,3.4vw,42px); margin-bottom:14px; }
+  .rhythm-head p{ color:var(--charcoal-soft); font-size:16.5px; }
+
+  .rhythm-scroll{ overflow-x:auto; padding-bottom:6px; }
+  .rhythm-track{
+    display:flex;
+    position:relative;
+    min-width:920px;
+    padding-top:14px;
+  }
+  .rhythm-track::before{
+    content:"";
+    position:absolute;
+    top:34px; left:0; right:0;
+    height:1px;
+    background:var(--paper-line);
+  }
+  .rhythm-point{
+    flex:1;
+    position:relative;
+    padding:0 14px;
+    text-align:left;
+  }
+  .rhythm-point::before{
+    content:"";
+    position:absolute;
+    top:28px; left:14px;
+    width:13px; height:13px;
+    border-radius:50%;
+    background:var(--paper);
+    border:2px solid var(--brass);
+  }
+  .rhythm-time{
+    font-family:var(--font-mono);
+    font-size:13px;
+    color:var(--brass-dim);
+    font-weight:700;
+    margin-bottom:54px;
+  }
+  .rhythm-label{
+    font-size:14.5px;
+    font-weight:600;
+    margin-bottom:4px;
+  }
+  .rhythm-sub{
+    font-size:13.5px;
+    color:var(--charcoal-soft);
+  }
+
+  /* ---------- FEATURES ---------- */
+  .features{
+    background:var(--ink);
+    color:var(--cream);
+    padding:108px 0;
+  }
+  .features-head{ max-width:560px; margin-bottom:60px; }
+  .features-head .eyebrow{ color:var(--brass-light); margin-bottom:16px; display:block; }
+  .features-head h2{ font-size:clamp(30px,3.4vw,42px); margin-bottom:14px; }
+  .features-head p{ color:rgba(244,238,224,0.7); font-size:16.5px; }
+
+  .feat-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:1px;
+    background:var(--ink-line);
+    border:1px solid var(--ink-line);
+  }
+  .feat-card{
+    background:var(--ink);
+    padding:34px 30px 30px;
+    position:relative;
+  }
+  .feat-tag{
+    width:46px; height:46px;
+    border-radius:50%;
+    background:var(--ink-soft);
+    border:1px solid var(--brass-dim);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-mono);
+    font-size:13px; font-weight:700;
+    color:var(--brass-light);
+    margin-bottom:22px;
+  }
+  .feat-tag::before{
+    content:"";
+    position:absolute;
+  }
+  .feat-card h3{
+    font-size:20px; font-weight:600;
+    margin-bottom:10px;
+    color:var(--cream);
+  }
+  .feat-card p{
+    font-size:14.5px;
+    color:rgba(244,238,224,0.65);
+  }
+  @media (max-width:920px){
+    .feat-grid{ grid-template-columns:repeat(2,1fr); }
+  }
+  @media (max-width:620px){
+    .feat-grid{ grid-template-columns:1fr; }
+  }
+
+  /* ---------- QUOTE ---------- */
+  .quote-section{ padding:104px 0; }
+  .quote-card{
+    max-width:760px; margin:0 auto;
+    background:var(--paper-deep);
+    border:1px dashed var(--brass-dim);
+    border-radius:8px;
+    padding:48px 52px;
+    position:relative;
+  }
+  .quote-card::before{
+    content:"GUEST REGISTER · ENTRY";
+    position:absolute;
+    top:-11px; left:40px;
+    background:var(--paper);
+    padding:0 10px;
+    font-family:var(--font-mono);
+    font-size:11px;
+    letter-spacing:0.08em;
+    color:var(--brass-dim);
+  }
+  .quote-card blockquote{
+    font-family:var(--font-display);
+    font-style:italic;
+    font-size:clamp(20px,2.4vw,26px);
+    line-height:1.45;
+    color:var(--charcoal);
+    margin-bottom:26px;
+  }
+  .quote-attr{ font-size:14px; color:var(--charcoal-soft); }
+  .quote-attr strong{ color:var(--charcoal); font-weight:600; }
+
+  /* ---------- PRICING ---------- */
+  .pricing{ padding:20px 0 116px; }
+  .pricing-head{ text-align:center; max-width:560px; margin:0 auto 56px; }
+  .pricing-head .eyebrow{ display:block; margin-bottom:16px; }
+  .pricing-head h2{ font-size:clamp(30px,3.4vw,42px); margin-bottom:14px; }
+  .pricing-head p{ color:var(--charcoal-soft); font-size:16.5px; }
+
+  .price-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:24px;
+  }
+  .price-card{
+    background:var(--paper);
+    border:1px solid var(--paper-line);
+    border-top:4px solid var(--brass-dim);
+    border-radius:8px;
+    padding:32px 28px;
+    display:flex; flex-direction:column;
+  }
+  .price-card.is-featured{
+    border-top-color:var(--brass);
+    box-shadow:0 24px 48px -28px rgba(27,26,18,0.35);
+  }
+  .price-range{
+    font-family:var(--font-mono);
+    font-size:12px; letter-spacing:0.06em; text-transform:uppercase;
+    color:var(--brass-dim);
+    margin-bottom:14px;
+  }
+  .price-card h3{ font-size:24px; margin-bottom:8px; }
+  .price-amount{
+    font-family:var(--font-display);
+    font-size:38px;
+    margin-bottom:4px;
+  }
+  .price-amount span{ font-size:15px; font-family:var(--font-body); color:var(--charcoal-soft); font-weight:500; }
+  .price-note{ font-size:13.5px; color:var(--charcoal-soft); margin-bottom:24px; }
+  .price-list{ margin-bottom:28px; flex-grow:1; }
+  .price-list li{
+    font-size:14.5px;
+    padding:8px 0;
+    border-bottom:1px solid var(--paper-line);
+    display:flex; gap:10px;
+  }
+  .price-list li:last-child{ border-bottom:none; }
+  .price-list li::before{ content:"—"; color:var(--brass); flex-shrink:0; }
+  .price-card .btn{ width:100%; justify-content:center; }
+
+  @media (max-width:920px){
+    .price-grid{ grid-template-columns:1fr; }
+  }
+
+  /* ---------- FINAL CTA ---------- */
+  .final-cta{
+    background:var(--ink);
+    color:var(--cream);
+    padding:96px 0;
+    text-align:center;
+  }
+  .final-cta h2{
+    font-size:clamp(28px,3.8vw,44px);
+    margin-bottom:16px;
+  }
+  .final-cta p{
+    color:rgba(244,238,224,0.7);
+    font-size:16.5px;
+    margin-bottom:32px;
+  }
+  .final-cta .hero-ctas{ justify-content:center; }
+  .final-cta-note{
+    margin-top:18px;
+    font-family:var(--font-mono);
+    font-size:12.5px;
+    color:rgba(244,238,224,0.45);
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    background:#0A1C13;
+    color:rgba(244,238,224,0.6);
+    padding:64px 0 32px;
+  }
+  .foot-top{
+    display:flex; justify-content:space-between; gap:48px;
+    flex-wrap:wrap;
+    margin-bottom:48px;
+  }
+  .foot-brand .nav-mark{ color:var(--cream); margin-bottom:12px; display:inline-block; }
+  .foot-brand p{ max-width:280px; font-size:14px; color:rgba(244,238,224,0.5); }
+  .foot-cols{ display:flex; gap:56px; flex-wrap:wrap; }
+  .foot-col h4{
+    font-family:var(--font-mono);
+    font-size:12px; letter-spacing:0.08em; text-transform:uppercase;
+    color:rgba(244,238,224,0.4);
+    margin-bottom:16px;
+  }
+  .foot-col li{ margin-bottom:10px; font-size:14.5px; }
+  .foot-col a:hover{ color:var(--brass-light); }
+  .foot-bottom{
+    border-top:1px solid rgba(244,238,224,0.1);
+    padding-top:24px;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px;
+    font-size:13px; color:rgba(244,238,224,0.4);
+  }
+
+  @media (max-width:600px){
+    .wrap{ padding:0 20px; }
+    .hero{ padding:56px 0 64px; }
+    .rhythm, .features, .quote-section, .pricing{ padding:64px 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.01ms !important; transition-duration:0.01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="nav">
+    <div class="wrap">
+      <a href="#top" class="nav-mark">Atri<span>u</span>m</a>
+      <nav class="nav-links">
+        <a href="#features">Product</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#quote">Stories</a>
+      </nav>
+      <div class="nav-cta">
+        <a href="#" class="nav-login">Log in</a>
+        <a href="#demo" class="btn btn-brass">Book a demo</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero" id="top">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow hero-eyebrow">Property management, simplified</span>
+        <h1>Know what's happening in <em>every room</em>, right now.</h1>
+        <p class="lead">Atrium brings reservations, housekeeping, rates, and guest messages into one front desk view — built for independent hotels and inns, not chains with a thousand rooms.</p>
+        <div class="hero-ctas">
+          <a href="#demo" class="btn btn-brass">Book a demo</a>
+          <a href="#features" class="btn btn-ghost-dark">See how it works →</a>
+        </div>
+        <p class="hero-proof">RUNNING THE FRONT DESK AT 600+ INDEPENDENT PROPERTIES</p>
+      </div>
+
+      <div class="board" aria-hidden="true">
+        <div class="board-head">
+          <span class="eyebrow"><span class="board-dot"></span>FRONT DESK · LIVE</span>
+          <span class="eyebrow" style="color:rgba(244,238,224,0.4);">TODAY</span>
+        </div>
+        <div id="flap-board"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="logos">
+    <div class="wrap">
+      <span class="logos-label">Trusted at the front desk of</span>
+      <div class="logos-names">
+        <span>The Harrow Inn</span>
+        <span>Casa Beren</span>
+        <span>Pinegate Lodge</span>
+        <span>Hotel Marabou</span>
+        <span>The Foundry Rooms</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="rhythm">
+    <div class="wrap">
+      <div class="rhythm-head">
+        <span class="eyebrow">The operational day</span>
+        <h2>A hotel's day, accounted for.</h2>
+        <p>Atrium runs quietly in the background of every shift — here's what it's doing while you run the floor.</p>
+      </div>
+      <div class="rhythm-scroll">
+        <div class="rhythm-track">
+          <div class="rhythm-point">
+            <div class="rhythm-time">06:30</div>
+            <div class="rhythm-label">Housekeeping shift opens</div>
+            <div class="rhythm-sub">Today's checkouts and stayovers are queued automatically.</div>
+          </div>
+          <div class="rhythm-point">
+            <div class="rhythm-time">11:00</div>
+            <div class="rhythm-label">Checkout reminders sent</div>
+            <div class="rhythm-sub">Guests get a text with checkout time and folio link.</div>
+          </div>
+          <div class="rhythm-point">
+            <div class="rhythm-time">12:00</div>
+            <div class="rhythm-label">Late checkout grace ends</div>
+            <div class="rhythm-sub">Rooms past grace are flagged for the front desk.</div>
+          </div>
+          <div class="rhythm-point">
+            <div class="rhythm-time">15:00</div>
+            <div class="rhythm-label">Check-in opens</div>
+            <div class="rhythm-sub">Room-ready alerts fire the moment cleaning is logged done.</div>
+          </div>
+          <div class="rhythm-point">
+            <div class="rhythm-time">18:30</div>
+            <div class="rhythm-label">Rates sync to every channel</div>
+            <div class="rhythm-sub">Tomorrow's pricing updates across all connected OTAs.</div>
+          </div>
+          <div class="rhythm-point">
+            <div class="rhythm-time">23:30</div>
+            <div class="rhythm-label">Night audit runs</div>
+            <div class="rhythm-sub">Occupancy, ADR, and RevPAR are ready by morning.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features" id="features">
+    <div class="wrap">
+      <div class="features-head">
+        <span class="eyebrow">The system</span>
+        <h2>Everything the front desk needs.</h2>
+        <p>Six rooms, one key. Each part of Atrium handles a piece of the day so nothing has to live on a whiteboard.</p>
+      </div>
+      <div class="feat-grid">
+        <article class="feat-card">
+          <div class="feat-tag">101</div>
+          <h3>Reservations</h3>
+          <p>See every booking, channel, and rate in one calendar. No more tab-switching between booking sites to find a room.</p>
+        </article>
+        <article class="feat-card">
+          <div class="feat-tag">102</div>
+          <h3>Housekeeping</h3>
+          <p>Room status updates the moment a stay starts, ends, or needs attention. Housekeeping always knows what's next.</p>
+        </article>
+        <article class="feat-card">
+          <div class="feat-tag">103</div>
+          <h3>Rate management</h3>
+          <p>Adjust nightly rates by date, season, or occupancy, and push the change to every connected channel at once.</p>
+        </article>
+        <article class="feat-card">
+          <div class="feat-tag">104</div>
+          <h3>Guest messaging</h3>
+          <p>Send check-in instructions, local tips, and checkout reminders by text, without leaving the front desk.</p>
+        </article>
+        <article class="feat-card">
+          <div class="feat-tag">105</div>
+          <h3>Reporting &amp; night audit</h3>
+          <p>Occupancy, ADR, and RevPAR, calculated automatically every night so the numbers are ready by morning.</p>
+        </article>
+        <article class="feat-card">
+          <div class="feat-tag">106</div>
+          <h3>Channel sync</h3>
+          <p>Bookings from every OTA land in one inbox, with no double-bookings and no manual calendar updates.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="quote-section" id="quote">
+    <div class="wrap">
+      <div class="quote-card">
+        <blockquote>"We used to run the front desk on a whiteboard and a notebook. Atrium is the whiteboard now — it just never gets erased by accident."</blockquote>
+        <p class="quote-attr"><strong>Dana Whitfield</strong> · General Manager, The Harrow Inn</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="pricing" id="pricing">
+    <div class="wrap">
+      <div class="pricing-head">
+        <span class="eyebrow">Rate plans</span>
+        <h2>Pick a rate plan.</h2>
+        <p>Priced for properties that run lean, not for chains with a procurement department.</p>
+      </div>
+      <div class="price-grid">
+        <div class="price-card">
+          <div class="price-range">Up to 15 rooms</div>
+          <h3>Inn</h3>
+          <div class="price-amount">$79<span>/month</span></div>
+          <div class="price-note">Billed monthly, cancel anytime</div>
+          <ul class="price-list">
+            <li>Reservations &amp; calendar</li>
+            <li>Housekeeping status board</li>
+            <li>2 connected OTA channels</li>
+            <li>Email support</li>
+          </ul>
+          <a href="#demo" class="btn btn-ghost-light">Start with Inn</a>
+        </div>
+        <div class="price-card is-featured">
+          <div class="price-range">Up to 75 rooms</div>
+          <h3>Hotel</h3>
+          <div class="price-amount">$189<span>/month</span></div>
+          <div class="price-note">Billed monthly, cancel anytime</div>
+          <ul class="price-list">
+            <li>Everything in Inn</li>
+            <li>Rate management &amp; rules</li>
+            <li>Unlimited OTA channels</li>
+            <li>Guest text messaging</li>
+            <li>Priority support</li>
+          </ul>
+          <a href="#demo" class="btn btn-brass">Start with Hotel</a>
+        </div>
+        <div class="price-card">
+          <div class="price-range">Multiple properties</div>
+          <h3>Group</h3>
+          <div class="price-amount">Custom</div>
+          <div class="price-note">Volume pricing per property</div>
+          <ul class="price-list">
+            <li>Everything in Hotel</li>
+            <li>Cross-property reporting</li>
+            <li>Dedicated onboarding</li>
+            <li>Phone support</li>
+          </ul>
+          <a href="#demo" class="btn btn-ghost-light">Talk to sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="final-cta" id="demo">
+    <div class="wrap">
+      <h2>Ready to see your rooms like this?</h2>
+      <p>A 20-minute walkthrough with your own room count and rate structure.</p>
+      <div class="hero-ctas">
+        <a href="#" class="btn btn-brass">Book a demo</a>
+      </div>
+      <div class="final-cta-note">NO CREDIT CARD REQUIRED · 20 MINUTE WALKTHROUGH</div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="foot-top">
+        <div class="foot-brand">
+          <span class="nav-mark">Atri<span style="color:var(--brass-light);">u</span>m</span>
+          <p>Front desk software for independent hotels and inns.</p>
+        </div>
+        <div class="foot-cols">
+          <div class="foot-col">
+            <h4>Product</h4>
+            <ul>
+              <li><a href="#features">Features</a></li>
+              <li><a href="#pricing">Pricing</a></li>
+              <li><a href="#">Channel partners</a></li>
+            </ul>
+          </div>
+          <div class="foot-col">
+            <h4>Company</h4>
+            <ul>
+              <li><a href="#">About</a></li>
+              <li><a href="#quote">Stories</a></li>
+              <li><a href="#">Careers</a></li>
+            </ul>
+          </div>
+          <div class="foot-col">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="#">Help center</a></li>
+              <li><a href="#">Contact</a></li>
+              <li><a href="#">Status</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <span>© 2026 Atrium. All rights reserved.</span>
+        <span>Made for the front desk.</span>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  // ---- Split-flap board ----
+  (function(){
+    var board = document.getElementById('flap-board');
+    if(!board) return;
+
+    var rooms = [
+      { room:'204', states:['VACANT','CLEANING','READY','OCCUPIED'], delay:3400 },
+      { room:'305', states:['OCCUPIED','CHECKING OUT','VACANT','CLEANING'], delay:4100 },
+      { room:'118', states:['READY','OCCUPIED','OCCUPIED','CLEANING'], delay:3700 },
+      { room:'412', states:['CLEANING','READY','OCCUPIED','VACANT'], delay:4600 }
+    ];
+
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    rooms.forEach(function(cfg){
+      var row = document.createElement('div');
+      row.className = 'flap-row';
+
+      var roomEl = document.createElement('span');
+      roomEl.className = 'flap-room';
+      roomEl.textContent = cfg.room;
+
+      var statusWrap = document.createElement('div');
+      statusWrap.className = 'flap-status-wrap';
+      var statusEl = document.createElement('span');
+      statusEl.className = 'flap-status';
+      statusEl.textContent = cfg.states[0];
+      statusWrap.appendChild(statusEl);
+
+      var sinceEl = document.createElement('span');
+      sinceEl.className = 'flap-since';
+      sinceEl.textContent = 'just now';
+
+      row.appendChild(roomEl);
+      row.appendChild(statusWrap);
+      row.appendChild(sinceEl);
+      board.appendChild(row);
+
+      if(reduceMotion){
+        statusEl.textContent = cfg.states[cfg.states.length - 1];
+        return;
+      }
+
+      var idx = 0;
+      function flipTo(text){
+        statusEl.style.transition = 'transform 170ms ease-in';
+        statusEl.style.transform = 'rotateX(-90deg)';
+        setTimeout(function(){
+          statusEl.textContent = text;
+          statusEl.style.transition = 'none';
+          statusEl.style.transform = 'rotateX(90deg)';
+          statusEl.offsetHeight; // reflow
+          requestAnimationFrame(function(){
+            statusEl.style.transition = 'transform 170ms ease-out';
+            statusEl.style.transform = 'rotateX(0deg)';
+          });
+        }, 170);
+        sinceEl.textContent = 'just now';
+      }
+
+      setInterval(function(){
+        idx = (idx + 1) % cfg.states.length;
+        flipTo(cfg.states[idx]);
+      }, cfg.delay);
+    });
+  })();
+</script>
+
+</body>
+  </html>
